@@ -1,0 +1,39 @@
+services:
+  evrinoma.dto.factory:
+    class: Evrinoma\DtoBundle\Factory\FactoryDto
+    arguments:
+      - '@event_dispatcher'
+      - '@evrinoma.dto.factory.adaptor'
+
+  evrinoma.dto.factory.adaptor:
+    class: Evrinoma\DtoBundle\Factory\FactoryAdaptor
+    autowire: true
+
+  Evrinoma\DtoBundle\Factory\FactoryDto:
+    alias: evrinoma.dto.factory
+    public: true
+    deprecated:
+
+  evrinoma.dto.listener.subscriber:
+    class: Evrinoma\DtoBundle\Subscriber\DtoAnnotationSubscriber
+    arguments:
+      - '@annotations.reader'
+      - '@evrinoma.dto.factory'
+    tags:
+      - { name: kernel.event_subscriber }
+
+  evrinoma.dto.listener.adapter_subscriber:
+    class: Evrinoma\DtoBundle\Subscriber\DtoAdapterAnnotationSubscriber
+    arguments:
+      - '@annotations.reader'
+      - '@evrinoma.dto.factory'
+    tags:
+      - { name: kernel.event_subscriber }
+
+  Evrinoma\DtoBundle\Subscriber\DtoAnnotationSubscriber:
+    alias: evrinoma.dto.listener.subscriber
+    public: true
+
+  Evrinoma\DtoBundle\Subscriber\DtoAdapterAnnotationSubscriber:
+    alias: evrinoma.dto.listener.adapter_subscriber
+    public: true
