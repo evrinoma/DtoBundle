@@ -45,10 +45,8 @@ abstract class AbstractDto implements DtoInterface
      */
     protected function regenerateRequest(Request $request)
     {
-        if ($this->lookingForRequest()) {
-            $target = $request->get($this->lookingForRequest());
-        }
-        $class  = $request->get('class');
+        $target = $this->getTarget($request);
+        $class = $request->get('class');
         if ($class !== $this->getClassEntity() && $target) {
             if (is_string($target)) {
                 $target = json_decode($target, true);
@@ -126,6 +124,22 @@ abstract class AbstractDto implements DtoInterface
     }
 //endregion Public
 
+//region SECTION: Private
+    /**
+     * @param Request $request
+     *
+     * @return mixed|null
+     */
+    private function getTarget(Request $request)
+    {
+        if ($this->lookingForRequest() !== null) {
+            return $request->get($this->lookingForRequest());
+        }
+
+        return null;
+    }
+//endregion Private
+
 //region SECTION: Dto
     /**
      * @param Request $request
@@ -177,5 +191,5 @@ abstract class AbstractDto implements DtoInterface
     {
         $this->factoryAdapter = &$factoryAdapter;
     }
-    //endregion Getters/Setters
+//endregion Getters/Setters
 }
