@@ -45,7 +45,9 @@ abstract class AbstractDto implements DtoInterface
      */
     protected function regenerateRequest(Request $request)
     {
-        $target = $request->get($this->lookingForRequest());
+        if ($this->lookingForRequest()) {
+            $target = $request->get($this->lookingForRequest());
+        }
         $class  = $request->get('class');
         if ($class !== $this->getClassEntity() && $target) {
             if (is_string($target)) {

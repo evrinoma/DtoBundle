@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 interface DtoInterface
 {
 //region SECTION: Public
+    public const DEFAULT_LOOKING_REQUEST = null;
     /**
      * @param $entity
      *
@@ -43,7 +44,7 @@ interface DtoInterface
 
 //region SECTION: Getters/Setters
     /**
-     * @return string|null
+     * @return string
      */
     public function lookingForRequest();
 
