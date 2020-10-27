@@ -12,7 +12,6 @@ services:
   Evrinoma\DtoBundle\Factory\FactoryDto:
     alias: evrinoma.dto.factory
     public: true
-    deprecated:
 
   evrinoma.dto.listener.subscriber:
     class: Evrinoma\DtoBundle\Subscriber\DtoAnnotationSubscriber
