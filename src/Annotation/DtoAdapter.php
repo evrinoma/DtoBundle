@@ -4,7 +4,7 @@ namespace Evrinoma\DtoBundle\Annotation;
 
 /**
  * Class DtoAdapter
- *
+ * @deprecated
  * @Annotation
  * @Attributes({
  *    @Attribute("adaptors", type = "array<Evrinoma\DtoBundle\Annotation\ApartAnnotation\DtoAdapterItem>"),

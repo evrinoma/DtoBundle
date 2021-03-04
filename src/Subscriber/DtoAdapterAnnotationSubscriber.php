@@ -14,6 +14,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  * Class DtoAdapterAnnotationSubscriber
  *
  * @package Evrinoma\DtoBundle\Subscriber
+ * @deprecated
  */
 class DtoAdapterAnnotationSubscriber implements  EventSubscriberInterface
 {

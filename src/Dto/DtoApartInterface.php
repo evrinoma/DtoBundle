@@ -4,7 +4,7 @@ namespace Evrinoma\DtoBundle\Dto;
 
 /**
  * Interface DtoApartInterface
- *
+ * @deprecated
  * @package Evrinoma\DtoBundle\Dto
  */
 interface DtoApartInterface

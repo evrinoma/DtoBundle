@@ -8,7 +8,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Class DtoAdapterEvent
- *
+ * @deprecated
  * @package Evrinoma\DtoBundle\Event
  */
 class DtoAdapterEvent extends Event

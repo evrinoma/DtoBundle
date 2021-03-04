@@ -4,7 +4,7 @@ namespace Evrinoma\DtoBundle\Annotation\ApartAnnotation;
 
 /**
  * Class DtoAdapterItem
- *
+ * @deprecated
  * @Annotation
  * @Attributes(
  *    @Attribute("class",  type = "string"),

@@ -8,7 +8,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Class FactoryAdaptor
- *
+ * @deprecated
  * @package Evrinoma\DtoBundle\Factory
  */
 class FactoryAdaptor
