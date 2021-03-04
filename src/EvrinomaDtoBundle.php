@@ -8,6 +8,8 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class EvrinomaDtoBundle extends Bundle
 {
+    public const DTO_BUNDLE = 'dto';
+
     public function getContainerExtension()
     {
         if (null === $this->extension) {

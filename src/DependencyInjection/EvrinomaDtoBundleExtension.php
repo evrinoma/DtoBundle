@@ -3,6 +3,7 @@
 
 namespace Evrinoma\DtoBundle\DependencyInjection;
 
+use Evrinoma\DtoBundle\EvrinomaDtoBundle;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -27,7 +28,7 @@ class EvrinomaDtoBundleExtension extends Extension
 //region SECTION: Getters/Setters
     public function getAlias()
     {
-        return 'dto';
+        return EvrinomaDtoBundle::DTO_BUNDLE;
     }
 //endregion Getters/Setters
 }
