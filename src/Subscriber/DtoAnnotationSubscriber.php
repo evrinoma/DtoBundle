@@ -5,6 +5,7 @@ namespace Evrinoma\DtoBundle\Subscriber;
 
 use Doctrine\Common\Annotations\Reader;
 use Evrinoma\DtoBundle\Annotation\Dto;
+use Evrinoma\DtoBundle\Annotation\Dtos;
 use Evrinoma\DtoBundle\Event\DtoEvent;
 use Evrinoma\DtoBundle\Factory\FactoryDto;
 use ReflectionObject;
@@ -42,14 +43,27 @@ class DtoAnnotationSubscriber implements EventSubscriberInterface
 //region SECTION: Private
     private function handleAnnotation($dto): void
     {
-        $reflectionObject    = new ReflectionObject($dto);
+        $reflectionObject     = new ReflectionObject($dto);
         $reflectionProperties = $reflectionObject->getProperties(ReflectionProperty::IS_PRIVATE);
 
         foreach ($reflectionProperties as $reflectionProperty) {
             $annotation = $this->annotationReader->getPropertyAnnotation($reflectionProperty, Dto::class);
-            if ($annotation instanceof Dto) {
-                $annotationDto = $this->factoryDto->createDto($annotation->class);
-                $dto->{'set'.ucfirst($reflectionProperty->getName())}($annotationDto);
+            if ($annotation) {
+                {
+                    $annotationDto = $this->factoryDto->createDto($annotation->class);
+                    $methodCall    = ($annotation->method) ?: 'set'.ucfirst($reflectionProperty->getName());
+                    $dto->{$methodCall}($annotationDto);
+                }
+            }
+            $annotation = $this->annotationReader->getPropertyAnnotation($reflectionProperty, Dtos::class);
+            if ($annotation) {
+                {
+                    foreach ($dto->{$annotation->generator}() as $request) {
+                        $annotationDto = $this->factoryDto->pushRequest($request)->createDto($annotation->class);
+                        $this->factoryDto->popRequest();
+                        $dto->{$annotation->add}($annotationDto);
+                    }
+                }
             }
         }
     }
@@ -64,6 +78,7 @@ class DtoAnnotationSubscriber implements EventSubscriberInterface
     }
 //endregion SECTION: Dto
 
+//region SECTION: Getters/Setters
     /**
      * @inheritDoc
      */
@@ -73,4 +88,5 @@ class DtoAnnotationSubscriber implements EventSubscriberInterface
             DtoEvent::class => 'onKernelDto',
         ];
     }
+//endregion Getters/Setters
 }

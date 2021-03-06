@@ -2,37 +2,61 @@
 
 namespace Evrinoma\DtoBundle\Factory;
 
-use Evrinoma\DtoBundle\Dto\AbstractDto;
-use Evrinoma\DtoBundle\Dto\DtoApartInterface;
 use Evrinoma\DtoBundle\Dto\DtoInterface;
 use Evrinoma\DtoBundle\Event\DtoEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class FactoryDto
  *
  * @package Evrinoma\DtoBundle\Factory
  */
-class FactoryDto
+final class FactoryDto implements FactoryDtoInterface
 {
 //region SECTION: Fields
+    private $stackRequest = [];
+    private $stackPull    = [];
     private $request;
     private $eventDispatcher;
-    private $pull = [];
-    private $factoryAdaptor;
+    private $pull         = [];
+
 //endregion Fields
 
 //region SECTION: Constructor
 
     /**
      * FactoryDto constructor.
+     *
+     * @param EventDispatcherInterface $eventDispatcher
      */
-    public function __construct(EventDispatcherInterface $eventDispatcher, FactoryAdaptor $factoryAdaptor)
+    public function __construct(EventDispatcherInterface $eventDispatcher)
     {
         $this->eventDispatcher = $eventDispatcher;
-        $this->factoryAdaptor  = $factoryAdaptor;
     }
 //endregion Constructor
+
+//region SECTION: Public
+    public function pushRequest(Request $request): FactoryDtoInterface
+    {
+        $this->stackRequest[] = $this->request;
+        $this->stackPull[]    = $this->pull;
+
+
+        $this->request = $request;
+        $this->pull    = [];
+
+        return $this;
+    }
+
+    public function popRequest(): FactoryDtoInterface
+    {
+        $this->request = array_pop($this->stackRequest);
+        $this->pull    = array_pop($this->stackPull);
+
+        return $this;
+    }
+//endregion Public
 
 //region SECTION: Private
     /**
@@ -43,31 +67,40 @@ class FactoryDto
         $this->pull[$dto->getClass()] = $dto;
 
     }
+
+    /**
+     * @param string $class
+     *
+     * @return DtoInterface
+     */
+    private function getDtoByClass($class)
+    {
+        return $this->pull[$class];
+    }
 //endregion Private
 
 //region SECTION: Dto
     /**
-     * @param $class
+     * @param string $class
      *
      * @return DtoInterface
      */
-    public function createDto($class)
+    public function createDto(string $class): ?DtoInterface
     {
         $dto = new $class;
         if ($dto instanceof DtoInterface) {
             if ($this->request) {
                 if (!$this->hasDto($dto)) {
-                    /** @var DtoInterface $class */
                     $request = clone $this->request;
-                    /** @var AbstractDto $dto */
-                    $dto     = $class::initDto($request);
-                    $dto
-                        ->toDto($request)
-                        ->setFactoryAdapter($this->factoryAdaptor);
+
+                    $dto = $dto::initDto();
+                    $dto->toDto($request);
                     $this->push($dto);
+
                     $event = new DtoEvent();
                     $event->setDto($dto);
                     $this->eventDispatcher->dispatch($event);
+
                 } else {
                     $dto = $this->getDtoByClass($class);
                 }
@@ -80,34 +113,11 @@ class FactoryDto
     }
 
     /**
-     * @param $class
-     *
-     * @return DtoInterface
-     */
-    public function cloneDto($class)
-    {
-        $dto = new $class;
-        if ($dto instanceof DtoInterface) {
-            if ($this->hasDto($dto)) {
-                $dto = clone $this->getDtoByClass($class);
-            }
-            /** @var AbstractDto $dto */
-            $dto->setFactoryAdapter($this->factoryAdaptor);
-
-        } elseif (!($dto instanceof DtoApartInterface)) {
-            $dto = null;
-        }
-
-        return $dto;
-    }
-
-
-    /**
      * @param DtoInterface $dto
      *
      * @return bool
      */
-    public function hasDto($dto)
+    private function hasDto($dto)
     {
         return array_key_exists($dto->getClass(), $this->pull);
     }
@@ -115,21 +125,11 @@ class FactoryDto
 
 //region SECTION: Getters/Setters
     /**
-     * @param string $class
-     *
-     * @return DtoInterface
-     */
-    public function getDtoByClass($class)
-    {
-        return $this->pull[$class];
-    }
-
-    /**
      * @param $request
      *
      * @return $this
      */
-    public function setRequest($request)
+    public function setRequest(Request $request): FactoryDtoInterface
     {
         $this->request = $request;
 

@@ -6,14 +6,17 @@ namespace Evrinoma\DtoBundle\Annotation;
  * Class Dto
  *
  * @Annotation
+ * @Attributes(
+ *    @Attribute("method",  type = "string")
+ * )
  * @package Evrinoma\DtoBundle\Annotation
  */
-final class Dto
+final class Dto extends AbstractDto
 {
 //region SECTION: Fields
     /**
      * @var string
      */
-    public $class;
+    public $method;
 //endregion Fields
 }

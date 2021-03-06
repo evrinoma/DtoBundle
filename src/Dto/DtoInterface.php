@@ -11,58 +11,21 @@ use Symfony\Component\HttpFoundation\Request;
  */
 interface DtoInterface
 {
-//region SECTION: Public
-    public const DEFAULT_LOOKING_REQUEST = null;
-    /**
-     * @param $entity
-     *
-     * @return mixed
-     */
-    public function fillEntity($entity);
-
-    /**
-     * @return \Generator|object
-     */
-    public function generatorEntity();
-//endregion Public
-
+//region SECTION: Fields
+    public const DTO_CLASS = 'class';
+//endregion Fields
 //region SECTION: Dto
+
     /**
-     * @param Request $request
-     *
      * @return DtoInterface
      */
-    public static function initDto($request);
+    public static function initDto(): DtoInterface;
 
     /**
      * @param Request $request
      *
      * @return AbstractDto
      */
-    public function toDto($request);
+    public function toDto(Request $request): DtoInterface;
 //endregion SECTION: Dto
-
-//region SECTION: Getters/Setters
-    /**
-     * @return string
-     */
-    public function lookingForRequest();
-
-    /**
-     * @return string
-     */
-    public function getClass();
-
-    /**
-     * @return object[]
-     */
-    public function getEntitys();
-
-    /**
-     * @param object[] $entitys
-     *
-     * @return DtoInterface
-     */
-    public function setEntitys($entitys);
-//endregion Getters/Setters
 }

@@ -3,7 +3,7 @@ services:
     class: Evrinoma\DtoBundle\Factory\FactoryDto
     arguments:
       - '@event_dispatcher'
-      - '@evrinoma.dto.factory.adaptor'
+#      - '@evrinoma.dto.factory.adaptor'
 
 #  evrinoma.dto.factory.adaptor:
 #    class: Evrinoma\DtoBundle\Factory\FactoryAdaptor
