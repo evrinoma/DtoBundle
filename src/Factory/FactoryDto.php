@@ -124,6 +124,11 @@ final class FactoryDto implements FactoryDtoInterface
 //endregion SECTION: Dto
 
 //region SECTION: Getters/Setters
+    public function getRequest(): ?Request
+    {
+        return $this->request;
+    }
+
     /**
      * @param $request
      *

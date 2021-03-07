@@ -19,11 +19,6 @@ final class Dtos extends AbstractDto
      * @Required
      * @var string
      */
-    public $generator;
-    /**
-     * @Required
-     * @var string
-     */
     public $add;
 //endregion Fields
 }

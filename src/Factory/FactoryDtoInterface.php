@@ -18,6 +18,11 @@ interface FactoryDtoInterface
     public function pushRequest(Request $request): FactoryDtoInterface;
 
     /**
+     * @return Request|null
+     */
+    public function getRequest(): ?Request;
+
+    /**
      * @return $this
      */
     public function popRequest(): FactoryDtoInterface;

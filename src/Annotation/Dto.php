@@ -7,7 +7,8 @@ namespace Evrinoma\DtoBundle\Annotation;
  *
  * @Annotation
  * @Attributes(
- *    @Attribute("method",  type = "string")
+ *    @Attribute("method",  type = "string"),
+ *    @Attribute("generator",  type = "string")
  * )
  * @package Evrinoma\DtoBundle\Annotation
  */

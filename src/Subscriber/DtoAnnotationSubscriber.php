@@ -50,15 +50,18 @@ class DtoAnnotationSubscriber implements EventSubscriberInterface
             $annotation = $this->annotationReader->getPropertyAnnotation($reflectionProperty, Dto::class);
             if ($annotation) {
                 {
-                    $annotationDto = $this->factoryDto->createDto($annotation->class);
-                    $methodCall    = ($annotation->method) ?: 'set'.ucfirst($reflectionProperty->getName());
-                    $dto->{$methodCall}($annotationDto);
+                    foreach ($dto->{$annotation->generator}($this->factoryDto->getRequest()) as $request) {
+                        $annotationDto = $this->factoryDto->pushRequest($request)->createDto($annotation->class);
+                        $this->factoryDto->popRequest();
+                        $methodCall    = ($annotation->method) ?: 'set'.ucfirst($reflectionProperty->getName());
+                        $dto->{$methodCall}($annotationDto);
+                    }
                 }
             }
             $annotation = $this->annotationReader->getPropertyAnnotation($reflectionProperty, Dtos::class);
             if ($annotation) {
                 {
-                    foreach ($dto->{$annotation->generator}() as $request) {
+                    foreach ($dto->{$annotation->generator}($this->factoryDto->getRequest()) as $request) {
                         $annotationDto = $this->factoryDto->pushRequest($request)->createDto($annotation->class);
                         $this->factoryDto->popRequest();
                         $dto->{$annotation->add}($annotationDto);
