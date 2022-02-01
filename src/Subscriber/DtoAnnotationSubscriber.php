@@ -6,6 +6,7 @@ namespace Evrinoma\DtoBundle\Subscriber;
 use Doctrine\Common\Annotations\Reader;
 use Evrinoma\DtoBundle\Annotation\Dto;
 use Evrinoma\DtoBundle\Annotation\Dtos;
+use Evrinoma\DtoBundle\Dto\AbstractDto;
 use Evrinoma\DtoBundle\Event\DtoEvent;
 use Evrinoma\DtoBundle\Factory\FactoryDto;
 use ReflectionObject;
@@ -43,32 +44,34 @@ class DtoAnnotationSubscriber implements EventSubscriberInterface
 //region SECTION: Private
     private function handleAnnotation($dto): void
     {
-        $reflectionObject     = new ReflectionObject($dto);
-        $reflectionProperties = $reflectionObject->getProperties(ReflectionProperty::IS_PRIVATE);
-
-        foreach ($reflectionProperties as $reflectionProperty) {
-            $annotation = $this->annotationReader->getPropertyAnnotation($reflectionProperty, Dto::class);
-            if ($annotation) {
-                {
-                    foreach ($dto->{$annotation->generator}($this->factoryDto->getRequest()) as $request) {
-                        $annotationDto = $this->factoryDto->pushRequest($request)->createDto($annotation->class);
-                        $this->factoryDto->popRequest();
-                        $methodCall    = ($annotation->method) ?: 'set'.ucfirst($reflectionProperty->getName());
-                        $dto->{$methodCall}($annotationDto);
+        $reflectionObject = new ReflectionObject($dto);
+        do {
+            $reflectionProperties = $reflectionObject->getProperties(ReflectionProperty::IS_PRIVATE);
+            foreach ($reflectionProperties as $reflectionProperty) {
+                $annotation = $this->annotationReader->getPropertyAnnotation($reflectionProperty, Dto::class);
+                if ($annotation) {
+                    {
+                        foreach ($dto->{$annotation->generator}($this->factoryDto->getRequest()) as $request) {
+                            $annotationDto = $this->factoryDto->pushRequest($request)->createDto($annotation->class);
+                            $this->factoryDto->popRequest();
+                            $methodCall = ($annotation->method) ?: 'set'.ucfirst($reflectionProperty->getName());
+                            $dto->{$methodCall}($annotationDto);
+                        }
+                    }
+                }
+                $annotation = $this->annotationReader->getPropertyAnnotation($reflectionProperty, Dtos::class);
+                if ($annotation) {
+                    {
+                        foreach ($dto->{$annotation->generator}($this->factoryDto->getRequest()) as $request) {
+                            $annotationDto = $this->factoryDto->pushRequest($request)->createDto($annotation->class);
+                            $this->factoryDto->popRequest();
+                            $dto->{$annotation->add}($annotationDto);
+                        }
                     }
                 }
             }
-            $annotation = $this->annotationReader->getPropertyAnnotation($reflectionProperty, Dtos::class);
-            if ($annotation) {
-                {
-                    foreach ($dto->{$annotation->generator}($this->factoryDto->getRequest()) as $request) {
-                        $annotationDto = $this->factoryDto->pushRequest($request)->createDto($annotation->class);
-                        $this->factoryDto->popRequest();
-                        $dto->{$annotation->add}($annotationDto);
-                    }
-                }
-            }
-        }
+            $reflectionObject = $reflectionObject->getParentClass();
+        } while (!($reflectionObject->getName() === AbstractDto::class && !$reflectionObject->getParentClass()));
     }
 //endregion Private
 
