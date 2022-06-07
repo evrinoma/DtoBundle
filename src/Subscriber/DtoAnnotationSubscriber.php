@@ -28,16 +28,23 @@ class DtoAnnotationSubscriber implements EventSubscriberInterface
     private Reader $annotationReader;
 
     /**
-     * FactoryDto.
+     * @var FactoryDto
      */
-    private $factoryDto;
+    private FactoryDto $factoryDto;
 
+    /**
+     * @param Reader     $annotationReader
+     * @param FactoryDto $factoryDto
+     */
     public function __construct(Reader $annotationReader, FactoryDto $factoryDto)
     {
         $this->annotationReader = $annotationReader;
         $this->factoryDto = $factoryDto;
     }
 
+    /**
+     * @param $dto
+     */
     private function handleAnnotation($dto): void
     {
         $reflectionObject = new ReflectionObject($dto);
@@ -65,8 +72,10 @@ class DtoAnnotationSubscriber implements EventSubscriberInterface
             $reflectionObject = $reflectionObject->getParentClass();
         } while (!(AbstractDto::class === $reflectionObject->getName() && !$reflectionObject->getParentClass()));
     }
-    // endregion Private
 
+    /**
+     * @param DtoEvent $event
+     */
     public function onKernelDto(DtoEvent $event): void
     {
         $dto = $event->getDto();

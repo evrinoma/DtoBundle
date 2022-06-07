@@ -20,5 +20,8 @@ interface EntityAdaptorInterface
      */
     public function fillEntity($entity): void;
 
+    /**
+     * @return string
+     */
     public function getClassEntity(): string;
 }

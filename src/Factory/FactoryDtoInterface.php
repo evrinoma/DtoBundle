@@ -19,14 +19,19 @@ use Symfony\Component\HttpFoundation\Request;
 interface FactoryDtoInterface
 {
     /**
-     * @return $this
+     * @param Request $request
+     *
+     * @return FactoryDtoInterface
      */
     public function pushRequest(Request $request): FactoryDtoInterface;
 
+    /**
+     * @return ?Request
+     */
     public function getRequest(): ?Request;
 
     /**
-     * @return $this
+     * @return FactoryDtoInterface
      */
     public function popRequest(): FactoryDtoInterface;
 
@@ -36,7 +41,9 @@ interface FactoryDtoInterface
     public function createDto(string $class): ?DtoInterface;
 
     /**
-     * @return $this
+     * @param Request $request
+     *
+     * @return FactoryDtoInterface
      */
     public function setRequest(Request $request): FactoryDtoInterface;
 }

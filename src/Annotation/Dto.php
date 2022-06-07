@@ -14,12 +14,10 @@ declare(strict_types=1);
 namespace Evrinoma\DtoBundle\Annotation;
 
 /**
- * Class Dto.
- *
  * @Annotation
  * @Attributes(
- *    @Attribute("method",  type = "string"),
- *    @Attribute("generator",  type = "string")
+ *     @Attribute("method",  type="string"),
+ *     @Attribute("generator",  type="string")
  * )
  */
 final class Dto extends AbstractDto

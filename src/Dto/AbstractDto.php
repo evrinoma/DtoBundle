@@ -22,6 +22,9 @@ abstract class AbstractDto implements DtoInterface
      */
     private Request $request;
 
+    /**
+     * @return Request
+     */
     public function getCloneRequest(): Request
     {
         if (!$this->request) {
@@ -31,11 +34,17 @@ abstract class AbstractDto implements DtoInterface
         return clone $this->request;
     }
 
+    /**
+     * @return DtoInterface
+     */
     public static function initDto(): DtoInterface
     {
         return new static();
     }
 
+    /**
+     * @return string
+     */
     public function getClass(): string
     {
         return static::class;

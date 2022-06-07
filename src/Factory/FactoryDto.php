@@ -20,17 +20,40 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class FactoryDto implements FactoryDtoInterface
 {
+    /**
+     * @var array
+     */
     private array $stackRequest = [];
+    /**
+     * @var array
+     */
     private array $stackPull = [];
+    /**
+     * @var Request
+     */
     private Request $request;
+    /**
+     * @var EventDispatcherInterface
+     */
     private EventDispatcherInterface $eventDispatcher;
+    /**
+     * @var array
+     */
     private array $pull = [];
 
+    /**
+     * @param EventDispatcherInterface $eventDispatcher
+     */
     public function __construct(EventDispatcherInterface $eventDispatcher)
     {
         $this->eventDispatcher = $eventDispatcher;
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return FactoryDtoInterface
+     */
     public function pushRequest(Request $request): FactoryDtoInterface
     {
         $this->stackRequest[] = $this->request;
@@ -42,6 +65,9 @@ final class FactoryDto implements FactoryDtoInterface
         return $this;
     }
 
+    /**
+     * @return FactoryDtoInterface
+     */
     public function popRequest(): FactoryDtoInterface
     {
         $this->request = array_pop($this->stackRequest);
@@ -49,25 +75,6 @@ final class FactoryDto implements FactoryDtoInterface
 
         return $this;
     }
-
-    /**
-     * @param $dto DtoInterface
-     */
-    private function push($dto)
-    {
-        $this->pull[$dto->getClass()] = $dto;
-    }
-
-    /**
-     * @param string $class
-     *
-     * @return DtoInterface
-     */
-    private function getDtoByClass($class)
-    {
-        return $this->pull[$class];
-    }
-    // endregion Private
 
     /**
      * @return DtoInterface
@@ -105,18 +112,39 @@ final class FactoryDto implements FactoryDtoInterface
      */
     private function hasDto($dto)
     {
-        return array_key_exists($dto->getClass(), $this->pull);
+        return \array_key_exists($dto->getClass(), $this->pull);
     }
 
+    /**
+     * @param DtoInterface $dto
+     */
+    private function push($dto)
+    {
+        $this->pull[$dto->getClass()] = $dto;
+    }
+
+    /**
+     * @param string $class
+     *
+     * @return DtoInterface
+     */
+    private function getDtoByClass($class)
+    {
+        return $this->pull[$class];
+    }
+
+    /**
+     * @return ?Request
+     */
     public function getRequest(): ?Request
     {
         return $this->request;
     }
 
     /**
-     * @param $request
+     * @param Request $request
      *
-     * @return $this
+     * @return FactoryDtoInterface
      */
     public function setRequest(Request $request): FactoryDtoInterface
     {
