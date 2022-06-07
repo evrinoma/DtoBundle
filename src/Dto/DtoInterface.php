@@ -19,9 +19,6 @@ interface DtoInterface
 {
     public const DTO_CLASS = 'class';
 
-    /**
-     * @return DtoInterface
-     */
     public static function initDto(): DtoInterface;
 
     /**
