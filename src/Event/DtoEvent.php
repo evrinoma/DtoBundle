@@ -1,20 +1,27 @@
 <?php
 
-namespace Evrinoma\DtoBundle\Event;
+declare(strict_types=1);
 
+/*
+ * This file is part of the package.
+ *
+ * (c) Nikolay Nikolaev <evrinoma@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Evrinoma\DtoBundle\Event;
 
 use Evrinoma\DtoBundle\Dto\DtoInterface;
 use Symfony\Contracts\EventDispatcher\Event;
 
-
 class DtoEvent extends Event
 {
-
     /**
      * @var DtoInterface
      */
     private $dto;
-
 
     /**
      * @return mixed
@@ -35,5 +42,4 @@ class DtoEvent extends Event
 
         return $this;
     }
-
 }

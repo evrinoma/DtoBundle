@@ -1,7 +1,17 @@
 <?php
 
-namespace Evrinoma\DtoBundle\Subscriber;
+declare(strict_types=1);
 
+/*
+ * This file is part of the package.
+ *
+ * (c) Nikolay Nikolaev <evrinoma@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Evrinoma\DtoBundle\Subscriber;
 
 use Doctrine\Common\Annotations\Reader;
 use Evrinoma\DtoBundle\Annotation\Dto;
@@ -13,26 +23,21 @@ use ReflectionObject;
 use ReflectionProperty;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-
 class DtoAnnotationSubscriber implements EventSubscriberInterface
 {
-
     private $annotationReader;
 
     /**
-     * FactoryDto
+     * FactoryDto.
      */
     private $factoryDto;
-
 
     public function __construct(Reader $annotationReader, FactoryDto $factoryDto)
     {
         $this->annotationReader = $annotationReader;
-        $this->factoryDto       = $factoryDto;
+        $this->factoryDto = $factoryDto;
     }
 
-
-//region SECTION: Private
     private function handleAnnotation($dto): void
     {
         $reflectionObject = new ReflectionObject($dto);
@@ -41,31 +46,26 @@ class DtoAnnotationSubscriber implements EventSubscriberInterface
             foreach ($reflectionProperties as $reflectionProperty) {
                 $annotation = $this->annotationReader->getPropertyAnnotation($reflectionProperty, Dto::class);
                 if ($annotation) {
-                    {
-                        foreach ($dto->{$annotation->generator}($this->factoryDto->getRequest()) as $request) {
-                            $annotationDto = $this->factoryDto->pushRequest($request)->createDto($annotation->class);
-                            $this->factoryDto->popRequest();
-                            $methodCall = ($annotation->method) ?: 'set'.ucfirst($reflectionProperty->getName());
-                            $dto->{$methodCall}($annotationDto);
-                        }
+                    foreach ($dto->{$annotation->generator}($this->factoryDto->getRequest()) as $request) {
+                        $annotationDto = $this->factoryDto->pushRequest($request)->createDto($annotation->class);
+                        $this->factoryDto->popRequest();
+                        $methodCall = ($annotation->method) ?: 'set'.ucfirst($reflectionProperty->getName());
+                        $dto->{$methodCall}($annotationDto);
                     }
                 }
                 $annotation = $this->annotationReader->getPropertyAnnotation($reflectionProperty, Dtos::class);
                 if ($annotation) {
-                    {
-                        foreach ($dto->{$annotation->generator}($this->factoryDto->getRequest()) as $request) {
-                            $annotationDto = $this->factoryDto->pushRequest($request)->createDto($annotation->class);
-                            $this->factoryDto->popRequest();
-                            $dto->{$annotation->add}($annotationDto);
-                        }
+                    foreach ($dto->{$annotation->generator}($this->factoryDto->getRequest()) as $request) {
+                        $annotationDto = $this->factoryDto->pushRequest($request)->createDto($annotation->class);
+                        $this->factoryDto->popRequest();
+                        $dto->{$annotation->add}($annotationDto);
                     }
                 }
             }
             $reflectionObject = $reflectionObject->getParentClass();
-        } while (!($reflectionObject->getName() === AbstractDto::class && !$reflectionObject->getParentClass()));
+        } while (!(AbstractDto::class === $reflectionObject->getName() && !$reflectionObject->getParentClass()));
     }
-//endregion Private
-
+    // endregion Private
 
     public function onKernelDto(DtoEvent $event): void
     {
@@ -74,9 +74,8 @@ class DtoAnnotationSubscriber implements EventSubscriberInterface
         $this->handleAnnotation($dto);
     }
 
-
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public static function getSubscribedEvents()
     {
@@ -84,5 +83,4 @@ class DtoAnnotationSubscriber implements EventSubscriberInterface
             DtoEvent::class => 'onKernelDto',
         ];
     }
-
 }

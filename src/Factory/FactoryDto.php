@@ -1,5 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of the package.
+ *
+ * (c) Nikolay Nikolaev <evrinoma@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Evrinoma\DtoBundle\Factory;
 
 use Evrinoma\DtoBundle\Dto\DtoInterface;
@@ -9,33 +20,24 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class FactoryDto implements FactoryDtoInterface
 {
-
     private $stackRequest = [];
-    private $stackPull    = [];
+    private $stackPull = [];
     private $request;
     private $eventDispatcher;
-    private $pull         = [];
+    private $pull = [];
 
-
-    /**
-     * FactoryDto constructor.
-     *
-     * @param EventDispatcherInterface $eventDispatcher
-     */
     public function __construct(EventDispatcherInterface $eventDispatcher)
     {
         $this->eventDispatcher = $eventDispatcher;
     }
 
-
     public function pushRequest(Request $request): FactoryDtoInterface
     {
         $this->stackRequest[] = $this->request;
-        $this->stackPull[]    = $this->pull;
-
+        $this->stackPull[] = $this->pull;
 
         $this->request = $request;
-        $this->pull    = [];
+        $this->pull = [];
 
         return $this;
     }
@@ -43,20 +45,17 @@ final class FactoryDto implements FactoryDtoInterface
     public function popRequest(): FactoryDtoInterface
     {
         $this->request = array_pop($this->stackRequest);
-        $this->pull    = array_pop($this->stackPull);
+        $this->pull = array_pop($this->stackPull);
 
         return $this;
     }
 
-
-//region SECTION: Private
     /**
      * @param $dto DtoInterface
      */
     private function push($dto)
     {
         $this->pull[$dto->getClass()] = $dto;
-
     }
 
     /**
@@ -68,17 +67,14 @@ final class FactoryDto implements FactoryDtoInterface
     {
         return $this->pull[$class];
     }
-//endregion Private
-
+    // endregion Private
 
     /**
-     * @param string $class
-     *
      * @return DtoInterface
      */
     public function createDto(string $class): ?DtoInterface
     {
-        $dto = new $class;
+        $dto = new $class();
         if ($dto instanceof DtoInterface) {
             if ($this->request) {
                 if (!$this->hasDto($dto)) {
@@ -91,7 +87,6 @@ final class FactoryDto implements FactoryDtoInterface
                     $event = new DtoEvent();
                     $event->setDto($dto);
                     $this->eventDispatcher->dispatch($event);
-
                 } else {
                     $dto = $this->getDtoByClass($class);
                 }
@@ -113,7 +108,6 @@ final class FactoryDto implements FactoryDtoInterface
         return array_key_exists($dto->getClass(), $this->pull);
     }
 
-
     public function getRequest(): ?Request
     {
         return $this->request;
@@ -130,5 +124,4 @@ final class FactoryDto implements FactoryDtoInterface
 
         return $this;
     }
-
 }

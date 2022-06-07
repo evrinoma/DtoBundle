@@ -1,5 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of the package.
+ *
+ * (c) Nikolay Nikolaev <evrinoma@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Evrinoma\DtoBundle\Dto;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -11,10 +22,7 @@ abstract class AbstractDto implements DtoInterface
      */
     private $request;
 
-    /**
-     * @return Request
-     */
-    public function getCloneRequest():Request
+    public function getCloneRequest(): Request
     {
         if (!$this->request) {
             $this->request = new Request();
@@ -23,21 +31,13 @@ abstract class AbstractDto implements DtoInterface
         return clone $this->request;
     }
 
-    /**
-     * @return DtoInterface
-     */
     public static function initDto(): DtoInterface
     {
         return new static();
     }
 
-
-    /**
-     * @return string
-     */
     public function getClass(): string
     {
         return static::class;
     }
-
 }
