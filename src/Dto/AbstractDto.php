@@ -20,7 +20,7 @@ abstract class AbstractDto implements DtoInterface
     /**
      * @var Request
      */
-    private $request;
+    private Request $request;
 
     public function getCloneRequest(): Request
     {

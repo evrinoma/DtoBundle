@@ -25,7 +25,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class DtoAnnotationSubscriber implements EventSubscriberInterface
 {
-    private $annotationReader;
+    private Reader $annotationReader;
 
     /**
      * FactoryDto.

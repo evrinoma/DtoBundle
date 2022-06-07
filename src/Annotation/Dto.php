@@ -27,5 +27,5 @@ final class Dto extends AbstractDto
     /**
      * @var string
      */
-    public $method;
+    public string $method;
 }

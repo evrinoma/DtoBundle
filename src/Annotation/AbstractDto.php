@@ -20,12 +20,12 @@ abstract class AbstractDto
      *
      * @var string
      */
-    public $class;
+    public string $class;
 
     /**
      * @Required
      *
      * @var string
      */
-    public $generator;
+    public string $generator;
 }

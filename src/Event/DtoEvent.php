@@ -21,7 +21,7 @@ class DtoEvent extends Event
     /**
      * @var DtoInterface
      */
-    private $dto;
+    private DtoInterface $dto;
 
     /**
      * @return mixed

@@ -20,11 +20,11 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class FactoryDto implements FactoryDtoInterface
 {
-    private $stackRequest = [];
-    private $stackPull = [];
-    private $request;
-    private $eventDispatcher;
-    private $pull = [];
+    private array $stackRequest = [];
+    private array $stackPull = [];
+    private Request $request;
+    private EventDispatcherInterface $eventDispatcher;
+    private array $pull = [];
 
     public function __construct(EventDispatcherInterface $eventDispatcher)
     {

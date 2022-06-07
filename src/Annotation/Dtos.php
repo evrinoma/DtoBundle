@@ -29,5 +29,5 @@ final class Dtos extends AbstractDto
      *
      * @var string
      */
-    public $add;
+    public string $add;
 }
