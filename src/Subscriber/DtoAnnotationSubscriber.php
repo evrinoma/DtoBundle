@@ -13,14 +13,10 @@ use ReflectionObject;
 use ReflectionProperty;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-/**
- * Class DtoAnnotationListener
- *
- * @package Evrinoma\DtoBundle\Listener
- */
+
 class DtoAnnotationSubscriber implements EventSubscriberInterface
 {
-//region SECTION: Fields
+
     private $annotationReader;
 
     /**
@@ -28,18 +24,13 @@ class DtoAnnotationSubscriber implements EventSubscriberInterface
      */
     private $factoryDto;
 
-//endregion Fields
 
-//region SECTION: Constructor
     public function __construct(Reader $annotationReader, FactoryDto $factoryDto)
     {
         $this->annotationReader = $annotationReader;
         $this->factoryDto       = $factoryDto;
     }
-//endregion Constructor
 
-//region SECTION: Public
-//endregion Public
 
 //region SECTION: Private
     private function handleAnnotation($dto): void
@@ -75,16 +66,15 @@ class DtoAnnotationSubscriber implements EventSubscriberInterface
     }
 //endregion Private
 
-//region SECTION: Dto
+
     public function onKernelDto(DtoEvent $event): void
     {
         $dto = $event->getDto();
 
         $this->handleAnnotation($dto);
     }
-//endregion SECTION: Dto
 
-//region SECTION: Getters/Setters
+
     /**
      * @inheritDoc
      */
@@ -94,5 +84,5 @@ class DtoAnnotationSubscriber implements EventSubscriberInterface
             DtoEvent::class => 'onKernelDto',
         ];
     }
-//endregion Getters/Setters
+
 }

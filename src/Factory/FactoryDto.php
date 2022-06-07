@@ -7,23 +7,15 @@ use Evrinoma\DtoBundle\Event\DtoEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * Class FactoryDto
- *
- * @package Evrinoma\DtoBundle\Factory
- */
 final class FactoryDto implements FactoryDtoInterface
 {
-//region SECTION: Fields
+
     private $stackRequest = [];
     private $stackPull    = [];
     private $request;
     private $eventDispatcher;
     private $pull         = [];
 
-//endregion Fields
-
-//region SECTION: Constructor
 
     /**
      * FactoryDto constructor.
@@ -34,9 +26,8 @@ final class FactoryDto implements FactoryDtoInterface
     {
         $this->eventDispatcher = $eventDispatcher;
     }
-//endregion Constructor
 
-//region SECTION: Public
+
     public function pushRequest(Request $request): FactoryDtoInterface
     {
         $this->stackRequest[] = $this->request;
@@ -56,7 +47,7 @@ final class FactoryDto implements FactoryDtoInterface
 
         return $this;
     }
-//endregion Public
+
 
 //region SECTION: Private
     /**
@@ -79,7 +70,7 @@ final class FactoryDto implements FactoryDtoInterface
     }
 //endregion Private
 
-//region SECTION: Dto
+
     /**
      * @param string $class
      *
@@ -121,9 +112,8 @@ final class FactoryDto implements FactoryDtoInterface
     {
         return array_key_exists($dto->getClass(), $this->pull);
     }
-//endregion SECTION: Dto
 
-//region SECTION: Getters/Setters
+
     public function getRequest(): ?Request
     {
         return $this->request;
@@ -140,5 +130,5 @@ final class FactoryDto implements FactoryDtoInterface
 
         return $this;
     }
-//endregion Getters/Setters
+
 }

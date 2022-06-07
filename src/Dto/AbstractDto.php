@@ -22,7 +22,7 @@ abstract class AbstractDto implements DtoInterface
 
         return clone $this->request;
     }
-//region SECTION: Dto
+
     /**
      * @return DtoInterface
      */
@@ -30,9 +30,8 @@ abstract class AbstractDto implements DtoInterface
     {
         return new static();
     }
-//endregion SECTION: Dto
 
-//region SECTION: Getters/Setters
+
     /**
      * @return string
      */
@@ -40,5 +39,5 @@ abstract class AbstractDto implements DtoInterface
     {
         return static::class;
     }
-//endregion Getters/Setters
+
 }

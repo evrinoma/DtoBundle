@@ -7,21 +7,15 @@ use Evrinoma\DtoBundle\Dto\DtoInterface;
 use Symfony\Contracts\EventDispatcher\Event;
 
 
-/**
- * Class DtoEvent
- *
- * @package Evrinoma\DtoBundle\Event
- */
 class DtoEvent extends Event
 {
-//region SECTION: Fields
+
     /**
      * @var DtoInterface
      */
     private $dto;
-//endregion Fields
 
-//region SECTION: Dto
+
     /**
      * @return mixed
      */
@@ -41,5 +35,5 @@ class DtoEvent extends Event
 
         return $this;
     }
-//endregion SECTION: Dto
+
 }
