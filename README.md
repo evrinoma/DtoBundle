@@ -14,9 +14,18 @@ vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php --verbose --diff --d
 vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php
 ```
 
+## Тесты
+
+```bash
+composer install --dev
+/usr/bin/php vendor/phpunit/phpunit/phpunit --bootstrap tests/bootstrap.php --configuration phpunit.xml.dist tests --teamcity
+
+```
+
 ## Thanks
 
 ## Done
 
-## License 
+## License
+
     MIT
