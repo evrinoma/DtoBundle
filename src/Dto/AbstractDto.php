@@ -18,9 +18,9 @@ use Symfony\Component\HttpFoundation\Request;
 abstract class AbstractDto implements DtoInterface
 {
     /**
-     * @var Request
+     * @var Request|null
      */
-    private Request $request;
+    private ?Request $request = null;
 
     /**
      * @return Request

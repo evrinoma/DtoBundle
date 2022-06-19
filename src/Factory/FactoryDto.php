@@ -110,7 +110,7 @@ final class FactoryDto implements FactoryDtoInterface
      *
      * @return bool
      */
-    private function hasDto($dto)
+    private function hasDto(DtoInterface $dto)
     {
         return \array_key_exists($dto->getClass(), $this->pull);
     }
@@ -118,7 +118,7 @@ final class FactoryDto implements FactoryDtoInterface
     /**
      * @param DtoInterface $dto
      */
-    private function push($dto)
+    private function push(DtoInterface $dto)
     {
         $this->pull[$dto->getClass()] = $dto;
     }
@@ -128,7 +128,7 @@ final class FactoryDto implements FactoryDtoInterface
      *
      * @return DtoInterface
      */
-    private function getDtoByClass($class)
+    private function getDtoByClass(string $class)
     {
         return $this->pull[$class];
     }
