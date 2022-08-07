@@ -23,7 +23,7 @@ namespace Evrinoma\DtoBundle\Annotation;
 final class Dto extends AbstractDto
 {
     /**
-     * @var string
+     * @var string|null
      */
-    public string $method;
+    public ?string $method = null;
 }
