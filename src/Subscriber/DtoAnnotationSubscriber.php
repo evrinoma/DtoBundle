@@ -56,7 +56,7 @@ class DtoAnnotationSubscriber implements EventSubscriberInterface
                     foreach ($dto->{$annotation->generator}($this->factoryDto->getRequest()) as $request) {
                         $annotationDto = $this->factoryDto->pushRequest($request)->createDto($annotation->class);
                         $this->factoryDto->popRequest();
-                        $methodCall = ($annotation->method) ?: 'set'.ucfirst($reflectionProperty->getName());
+                        $methodCall = ('' !== $annotation->method) ?: 'set'.ucfirst($reflectionProperty->getName());
                         $dto->{$methodCall}($annotationDto);
                     }
                 }
@@ -65,7 +65,9 @@ class DtoAnnotationSubscriber implements EventSubscriberInterface
                     foreach ($dto->{$annotation->generator}($this->factoryDto->getRequest()) as $request) {
                         $annotationDto = $this->factoryDto->pushRequest($request)->createDto($annotation->class);
                         $this->factoryDto->popRequest();
-                        $dto->{$annotation->add}($annotationDto);
+                        if ('' !== $annotation->add) {
+                            $dto->{$annotation->add}($annotationDto);
+                        }
                     }
                 }
             }
