@@ -49,7 +49,7 @@ class DtoAnnotationSubscriber implements EventSubscriberInterface
     {
         $reflectionObject = new ReflectionObject($dto);
         do {
-            $reflectionProperties = $reflectionObject->getProperties(ReflectionProperty::IS_PRIVATE);
+            $reflectionProperties = $reflectionObject->getProperties(ReflectionProperty::IS_PRIVATE | ReflectionProperty::IS_PROTECTED);
             foreach ($reflectionProperties as $reflectionProperty) {
                 $annotation = $this->annotationReader->getPropertyAnnotation($reflectionProperty, Dto::class);
                 if ($annotation) {
