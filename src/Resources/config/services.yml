@@ -3,6 +3,7 @@ services:
     class: Evrinoma\DtoBundle\Factory\FactoryDto
     arguments:
       - '@event_dispatcher'
+      - '@evrinoma.dto.service.registry'
 
   Evrinoma\DtoBundle\Factory\FactoryDto:
     alias: evrinoma.dto.factory
@@ -19,3 +20,11 @@ services:
   Evrinoma\DtoBundle\Subscriber\DtoAnnotationSubscriber:
     alias: evrinoma.dto.listener.subscriber
     public: true
+
+  evrinoma.dto.service.registry:
+    class: Evrinoma\DtoBundle\Registry\ServiceRegistry
+    public: true
+    arguments:
+
+  Evrinoma\DtoBundle\Registry\ServiceRegistryInterface:
+    alias: evrinoma.dto.service.registry

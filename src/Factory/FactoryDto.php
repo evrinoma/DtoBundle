@@ -15,6 +15,7 @@ namespace Evrinoma\DtoBundle\Factory;
 
 use Evrinoma\DtoBundle\Dto\DtoInterface;
 use Evrinoma\DtoBundle\Event\DtoEvent;
+use Evrinoma\DtoBundle\Registry\ServiceRegistryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -39,14 +40,20 @@ final class FactoryDto implements FactoryDtoInterface
     /**
      * @var array
      */
-    private array $pull = [];
+    private array                    $pull = [];
+    /**
+     * @var ServiceRegistryInterface
+     */
+    private ServiceRegistryInterface $serviceRegistry;
 
     /**
      * @param EventDispatcherInterface $eventDispatcher
+     * @param ServiceRegistryInterface $serviceRegistry
      */
-    public function __construct(EventDispatcherInterface $eventDispatcher)
+    public function __construct(EventDispatcherInterface $eventDispatcher, ServiceRegistryInterface $serviceRegistry)
     {
         $this->eventDispatcher = $eventDispatcher;
+        $this->serviceRegistry = $serviceRegistry;
     }
 
     /**
@@ -88,6 +95,7 @@ final class FactoryDto implements FactoryDtoInterface
                     $request = clone $this->request;
 
                     $dto = $dto::initDto();
+                    $this->serviceRegistry->fill($dto);
                     $dto->toDto($request);
                     $this->push($dto);
 

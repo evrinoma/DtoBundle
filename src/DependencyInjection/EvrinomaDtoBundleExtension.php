@@ -29,6 +29,6 @@ class EvrinomaDtoBundleExtension extends Extension
 
     public function getAlias()
     {
-        return EvrinomaDtoBundle::DTO_BUNDLE;
+        return EvrinomaDtoBundle::BUNDLE;
     }
 }
