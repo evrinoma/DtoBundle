@@ -25,6 +25,7 @@ services:
     class: Evrinoma\DtoBundle\Registry\ServiceRegistry
     public: true
     arguments:
+      - '@annotations.reader'
 
   Evrinoma\DtoBundle\Registry\ServiceRegistryInterface:
     alias: evrinoma.dto.service.registry

@@ -15,7 +15,7 @@ namespace Evrinoma\DtoBundle\Registry;
 
 interface ServiceInterface
 {
-    public function service(): array;
+    public function service();
 
     public function tag(): string;
 }

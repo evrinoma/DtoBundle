@@ -18,10 +18,4 @@ namespace Evrinoma\DtoBundle\Annotation;
  */
 final class Required
 {
-    /**
-     * @Required
-     *
-     * @var string
-     */
-    public string $class;
 }

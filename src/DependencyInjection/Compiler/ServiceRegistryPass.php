@@ -31,7 +31,7 @@ class ServiceRegistryPass implements CompilerPassInterface
 
         $definition = $container->findDefinition(ServiceRegistryInterface::class);
 
-        $taggedServices = $container->findTaggedServiceIds('evrinoma.service');
+        $taggedServices = $container->findTaggedServiceIds('evrinoma.dto.service');
 
         foreach ($taggedServices as $id => $tags) {
             $definition->addMethodCall('addService', [new Reference($id)]);
