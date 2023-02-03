@@ -18,7 +18,6 @@ use Evrinoma\DtoBundle\Annotation\Required;
 use Evrinoma\DtoBundle\Dto\AbstractDto;
 use Evrinoma\DtoBundle\Dto\DtoInterface;
 use Evrinoma\DtoBundle\Exception\ServiceRegistryException;
-use ReflectionProperty;
 
 final class ServiceRegistry implements ServiceRegistryInterface
 {
@@ -50,7 +49,7 @@ final class ServiceRegistry implements ServiceRegistryInterface
     {
         $reflectionObject = new \ReflectionObject($dto);
         do {
-            $reflectionMethods = $reflectionObject->getMethods(ReflectionProperty::IS_PRIVATE | ReflectionProperty::IS_PROTECTED);
+            $reflectionMethods = $reflectionObject->getMethods(\ReflectionProperty::IS_PRIVATE | \ReflectionProperty::IS_PROTECTED);
             foreach ($reflectionMethods as $reflectionMethod) {
                 $annotation = $this->annotationReader->getMethodAnnotation($reflectionMethod, Required::class);
                 if ($annotation) {

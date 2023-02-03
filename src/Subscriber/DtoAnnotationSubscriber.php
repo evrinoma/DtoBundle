@@ -19,8 +19,6 @@ use Evrinoma\DtoBundle\Annotation\Dtos;
 use Evrinoma\DtoBundle\Dto\AbstractDto;
 use Evrinoma\DtoBundle\Event\DtoEvent;
 use Evrinoma\DtoBundle\Factory\FactoryDto;
-use ReflectionObject;
-use ReflectionProperty;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class DtoAnnotationSubscriber implements EventSubscriberInterface
@@ -47,9 +45,9 @@ class DtoAnnotationSubscriber implements EventSubscriberInterface
      */
     private function handleAnnotation($dto): void
     {
-        $reflectionObject = new ReflectionObject($dto);
+        $reflectionObject = new \ReflectionObject($dto);
         do {
-            $reflectionProperties = $reflectionObject->getProperties(ReflectionProperty::IS_PRIVATE | ReflectionProperty::IS_PROTECTED);
+            $reflectionProperties = $reflectionObject->getProperties(\ReflectionProperty::IS_PRIVATE | \ReflectionProperty::IS_PROTECTED);
             foreach ($reflectionProperties as $reflectionProperty) {
                 $annotation = $this->annotationReader->getPropertyAnnotation($reflectionProperty, Dto::class);
                 if ($annotation) {
