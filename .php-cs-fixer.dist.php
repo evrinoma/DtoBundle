@@ -40,12 +40,12 @@ return (new PhpCsFixer\Config())
         'declare_strict_types' => true,
         'no_superfluous_phpdoc_tags' => false,
         'self_accessor' => false,
+        'phpdoc_separation' => false,
     ])
     ->setRiskyAllowed(true)
     ->setFinder(
         (new PhpCsFixer\Finder())
             ->in(__DIR__.'/src')
-            ->in(__DIR__.'/tests')
             ->append([__FILE__])
             ->notPath('#/Fixtures/#')
             ->exclude([])
