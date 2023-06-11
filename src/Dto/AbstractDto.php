@@ -49,7 +49,7 @@ abstract class AbstractDto implements DtoInterface
     /**
      * @Required
      */
-    protected function setIdentity(IdentityInterface $identityService): DtoInterface
+    protected function setIdentityService(IdentityInterface $identityService): DtoInterface
     {
         $this->identityService = $identityService;
 
