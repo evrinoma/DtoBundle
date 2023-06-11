@@ -25,7 +25,24 @@ services:
     class: Evrinoma\DtoBundle\Registry\ServiceRegistry
     public: true
     arguments:
+      - '%kernel.cache_dir%'
       - '@annotations.reader'
 
   Evrinoma\DtoBundle\Registry\ServiceRegistryInterface:
     alias: evrinoma.dto.service.registry
+
+  evrinoma.dto.service.identity.class:
+    class: Evrinoma\DtoBundle\Service\Identity\ClassIdentity
+    autowire: true
+
+  Evrinoma\DtoBundle\Service\Identity\ClassIdentity:
+    alias: evrinoma.dto.service.identity.class
+    public: true
+
+  evrinoma.dto.service.identity.md5:
+    class: Evrinoma\DtoBundle\Service\Identity\Md5Identity
+    autowire: true
+
+  Evrinoma\DtoBundle\Service\Identity\Md5Identity:
+    alias: evrinoma.dto.service.identity.md5
+    public: true

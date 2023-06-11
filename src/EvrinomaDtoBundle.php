@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Evrinoma\DtoBundle;
 
+use Evrinoma\DtoBundle\DependencyInjection\Compiler\ServicePass;
 use Evrinoma\DtoBundle\DependencyInjection\Compiler\ServiceRegistryPass;
 use Evrinoma\DtoBundle\DependencyInjection\EvrinomaDtoBundleExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -26,6 +27,7 @@ class EvrinomaDtoBundle extends Bundle
     {
         parent::build($container);
         $container
+            ->addCompilerPass(new ServicePass())
             ->addCompilerPass(new ServiceRegistryPass())
         ;
     }

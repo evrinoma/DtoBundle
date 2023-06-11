@@ -21,35 +21,18 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class FactoryDto implements FactoryDtoInterface
 {
-    /**
-     * @var array
-     */
     private array $stackRequest = [];
-    /**
-     * @var array
-     */
+
     private array $stackPull = [];
-    /**
-     * @var Request
-     */
+
     private Request $request;
-    /**
-     * @var EventDispatcherInterface
-     */
+
     private EventDispatcherInterface $eventDispatcher;
-    /**
-     * @var array
-     */
-    private array                    $pull = [];
-    /**
-     * @var ServiceRegistryInterface
-     */
+
+    private array $pull = [];
+
     private ServiceRegistryInterface $serviceRegistry;
 
-    /**
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param ServiceRegistryInterface $serviceRegistry
-     */
     public function __construct(EventDispatcherInterface $eventDispatcher, ServiceRegistryInterface $serviceRegistry)
     {
         $this->eventDispatcher = $eventDispatcher;
@@ -89,6 +72,7 @@ final class FactoryDto implements FactoryDtoInterface
     public function createDto(string $class): ?DtoInterface
     {
         $dto = new $class();
+        $this->serviceRegistry->fill($dto);
         if ($dto instanceof DtoInterface) {
             if ($this->request) {
                 if (!$this->hasDto($dto)) {

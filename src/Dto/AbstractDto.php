@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Evrinoma\DtoBundle\Dto;
 
+use Evrinoma\DtoBundle\Annotation\Required;
+use Evrinoma\DtoBundle\Service\Identity\IdentityInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 abstract class AbstractDto implements DtoInterface
@@ -21,6 +23,8 @@ abstract class AbstractDto implements DtoInterface
      * @var Request|null
      */
     private ?Request $request = null;
+
+    private ?IdentityInterface $identityService = null;
 
     /**
      * @return Request
@@ -43,10 +47,20 @@ abstract class AbstractDto implements DtoInterface
     }
 
     /**
+     * @Required
+     */
+    protected function setIdentity(IdentityInterface $identityService): DtoInterface
+    {
+        $this->identityService = $identityService;
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getClass(): string
     {
-        return static::class;
+        return $this->identityService->getIdentity(static::class);
     }
 }

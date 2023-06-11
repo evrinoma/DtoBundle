@@ -1,4 +1,21 @@
-## Description
+# Installation
+
+Добавить в kernel
+
+    Evrinoma\DtoBundle\EvrinomaDtoBundle::class => ['all' => true],
+
+Добавить в composer
+
+    composer config repositories.dto vcs https://github.com/evrinoma/DtoBundle.git
+
+# Configuration
+
+    dto:
+        services:
+          identity - переопределение сервиса identity, поумолчанию используется class,
+            class - индетификация dto по параметру class
+            md5 - индетификация dto по параметру md5(class)
+            либо - произвольный alias на свой сервис 
 
 ## Notice
 

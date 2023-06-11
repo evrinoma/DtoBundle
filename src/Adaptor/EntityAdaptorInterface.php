@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Evrinoma\DtoBundle\Adaptor;
 
+/**
+ * @deprecated
+ */
 interface EntityAdaptorInterface
 {
     /**
