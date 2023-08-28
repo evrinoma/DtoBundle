@@ -17,9 +17,15 @@ use Evrinoma\DtoBundle\Registry\ServiceInterface;
 
 final class Md5Identity implements ServiceInterface, IdentityInterface
 {
+    private array $lazy = [];
+
     public function getIdentity(string $class): string
     {
-        return md5($class);
+        if (!\array_key_exists($class, $this->lazy)) {
+            $this->lazy[$class] = md5($class);
+        }
+
+        return $this->lazy[$class];
     }
 
     public function service()

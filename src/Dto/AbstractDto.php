@@ -19,16 +19,10 @@ use Symfony\Component\HttpFoundation\Request;
 
 abstract class AbstractDto implements DtoInterface
 {
-    /**
-     * @var Request|null
-     */
     private ?Request $request = null;
 
     private ?IdentityInterface $identityService = null;
 
-    /**
-     * @return Request
-     */
     public function getCloneRequest(): Request
     {
         if (!$this->request) {
@@ -38,9 +32,6 @@ abstract class AbstractDto implements DtoInterface
         return clone $this->request;
     }
 
-    /**
-     * @return DtoInterface
-     */
     public static function initDto(): DtoInterface
     {
         return new static();
@@ -56,11 +47,17 @@ abstract class AbstractDto implements DtoInterface
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getClass(): string
     {
         return $this->identityService->getIdentity(static::class);
+    }
+
+    public function toRequest(array $data, string $class): Request
+    {
+        $request = $this->getCloneRequest();
+        $data[DtoInterface::DTO_CLASS] = $this->identityService->getIdentity($class);
+        $request->request->add($data);
+
+        return $request;
     }
 }
